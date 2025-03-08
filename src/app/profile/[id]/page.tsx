@@ -3,14 +3,13 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-interface UserProfileProps {
-  params: { id: string };
-}
+type tParams =Promise<{ id: string }>;
 
-export default function UserProfile({ params }: UserProfileProps) {
+export default async function UserProfile({ params }:{params:tParams}) {
+  const {id} = await params
   const forgotPassword = async () => {
     try {
-      const res = await axios.post("/api/users/password", { id: params.id });
+      const res = await axios.post("/api/users/password", { id });
       toast.success(res.data.message);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -23,7 +22,7 @@ export default function UserProfile({ params }: UserProfileProps) {
 
   return (
     <div className="flex flex-col justify-center w-full items-center h-screen">
-      <p>My ID: {params.id}</p>
+      <p>My ID: {id}</p>
       <button
         className="p-2 bg-red-200 text-black rounded cursor-pointer mt-5"
         onClick={forgotPassword}
