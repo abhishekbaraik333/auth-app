@@ -13,7 +13,6 @@ export default function UserProfile({ params }: { params: { id: string } }) {
     }
   }, [params]);
 
-
   const forgotPassword = async () => {
     try {
       const res = await axios.post("/api/users/password", { id:userId });
