@@ -1,14 +1,22 @@
 "use client";
 
 import axios from "axios";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function UserProfile({ params }: { params: { id: string } }) {
-  const { id } = params;
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    if (params?.id) {
+      setUserId(params.id);
+    }
+  }, [params]);
+
 
   const forgotPassword = async () => {
     try {
-      const res = await axios.post("/api/users/password", { id });
+      const res = await axios.post("/api/users/password", { id:userId });
       toast.success(res.data.message);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
