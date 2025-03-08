@@ -3,6 +3,7 @@ import { DBConnect } from "@/dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { error } from "console";
 
 DBConnect();
 
@@ -20,6 +21,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (user.isVerified === false) {
+      return NextResponse.json({ error: "Please verify your email"},{status:400});
+    }
+
     // validating Password
 
     const validatedPassword = await bcrypt.compare(password, user.password);
@@ -30,9 +35,9 @@ export async function POST(request: NextRequest) {
 
     //creating a token
     const tokenData = {
-      id:user._id,
+      id: user._id,
       email: user.email,
-      username:user.username
+      username: user.username,
     };
 
     const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
@@ -48,11 +53,14 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
     });
 
-    return response;    
+    return response;
   } catch (error: unknown) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
+    return NextResponse.json(
+      { error: "An unexpected error occurred" },
+      { status: 500 }
+    );
   }
 }
