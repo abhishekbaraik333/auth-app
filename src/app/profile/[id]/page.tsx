@@ -29,7 +29,7 @@ export default function UserProfile({ params }: { params: { id: string } }) {
   return (
     <>
       <div className="flex flex-col justify-center w-full items-center h-screen">
-        My ID: {id}
+        My ID: {userId}
         <button
           className="p-2 bg-red-200 text-black rounded cursor-pointer mt-5"
           onClick={forgotPassword}
