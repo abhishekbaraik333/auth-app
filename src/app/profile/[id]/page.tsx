@@ -3,7 +3,11 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export default function UserProfile({ params }: { params: { id: string } }) {
+interface UserProfileProps {
+  params: { id: string };
+}
+
+export default function UserProfile({ params }: UserProfileProps) {
   const forgotPassword = async () => {
     try {
       const res = await axios.post("/api/users/password", { id: params.id });
