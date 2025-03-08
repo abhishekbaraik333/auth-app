@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
-export default function verifyEmailPage(){
+export default function VerifyEmailPage(){
 
     const [token, setToken] = useState('')
     const [verified, setVerified] = useState(false)
@@ -21,6 +21,7 @@ export default function verifyEmailPage(){
             } else {
               toast.error("An unexpected error occurred.");
             }
+            setError(true)
           }
     }
 
