@@ -3,7 +3,6 @@ import { DBConnect } from "@/dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { error } from "console";
 
 DBConnect();
 
