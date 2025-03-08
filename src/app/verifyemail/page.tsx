@@ -3,6 +3,7 @@
 import axios from "axios"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 export default function verifyEmailPage(){
 
@@ -14,11 +15,13 @@ export default function verifyEmailPage(){
         try {
             await axios.post("/api/users/verifyemail",{token})
             setVerified(true)
-        } catch (error:any) {
-            setError(true)
-            console.log(error);
-            
-        }
+        } catch (error: unknown) { 
+            if (axios.isAxiosError(error)) { 
+              toast.error(error.response?.data?.error || "Something went wrong!");
+            } else {
+              toast.error("An unexpected error occurred.");
+            }
+          }
     }
 
     useEffect(() => {

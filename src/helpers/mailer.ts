@@ -30,16 +30,20 @@ export const sendMail = async ({ email, emailType, userID }: any) => {
     const mailOptions = {
       from: "truevolve28@gmail.com",
       to: email,
-      subject: emailType === "VERIFY" ? "Verify your email" : "Reset your Password",
-      html: `<p>Click <a href="${process.env.DOMAIN}/${emailType === "VERIFY" ? "verifyemail" : "resetpassword"}?token=${hashedToken}">here</a> to ${
+      subject:
+        emailType === "VERIFY" ? "Verify your email" : "Reset your Password",
+      html: `<p>Click <a href="${process.env.DOMAIN}/${
+        emailType === "VERIFY" ? "verifyemail" : "resetpassword"
+      }?token=${hashedToken}">here</a> to ${
         emailType === "VERIFY" ? "Verify your email" : "reset your password"
       }</p>`,
     };
 
-  const mailresponse = await transporter.sendMail(mailOptions)
-  return mailresponse
-
-  } catch (error: any) {
-    throw new Error("Sending Email Error:", error.message);
+    const mailresponse = await transporter.sendMail(mailOptions);
+    return mailresponse;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
   }
 };

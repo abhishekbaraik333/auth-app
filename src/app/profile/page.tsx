@@ -13,18 +13,20 @@ const Profile = () => {
 
   const logout = async()=>{
     try {
-      const response = await axios.get("/api/users/logout")
+      await axios.get("/api/users/logout")
       toast.success("Logout Successful")
       router.push("/login")
-    } catch (error:any) {
-      console.log("Logout unsuccessful Error:", error.message);
-      
+    } catch (error: unknown) { 
+      if (axios.isAxiosError(error)) { 
+        toast.error(error.response?.data?.error || "Something went wrong!");
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     }
   }
 
   const getUser = async()=>{
     const response = await axios.get("/api/users/me")
-    console.log(response.data.data._id);
     setData(response.data.data._id)
   }
 

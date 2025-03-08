@@ -23,8 +23,12 @@ const Signup = () => {
       const response = await axios.post("/api/users/signup",user)
       toast.success(response.data.message)
       router.push("/login")
-    } catch (error:any) {
-      toast.error(error.response.data.error)
+    }catch (error: unknown) { 
+      if (axios.isAxiosError(error)) { 
+        toast.error(error.response?.data?.error || "Something went wrong!");
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     }finally{
       setLoading(false)
     }

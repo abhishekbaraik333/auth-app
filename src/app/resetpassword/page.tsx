@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
-export default function resetPassword(){
+export default function ResetPassword(){
     const router = useRouter()
     const [token, setToken] = useState('')
     const [newPassword, setNewPassword] = useState('')
@@ -16,9 +16,13 @@ export default function resetPassword(){
            const res = await axios.post("/api/users/resetpassword",{token, newPassword})
             toast.success(res.data.message)
             router.push("/login")
-        } catch (error:any) {
-            toast.error(error.response.data)
-        }
+        } catch (error: unknown) { 
+            if (axios.isAxiosError(error)) { 
+              toast.error(error.response?.data?.error || "Something went wrong!");
+            } else {
+              toast.error("An unexpected error occurred.");
+            }
+          }
     }
 
     useEffect(() => {

@@ -1,24 +1,26 @@
 "use client"
 
 import axios from "axios";
-import { useParams } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default async function UserProfile({
   params,
 }: {
-  params: Promise<{ id: any }>;
+  params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
 
   const forgotPassword = async() =>{
     try {      
       const res = await axios.post("/api/users/password", {id})
-      console.log(res);
       toast.success(res.data.message)
       
-    } catch (error:any) {
-      throw new Error(error.message)
+    } catch (error: unknown) { 
+      if (axios.isAxiosError(error)) { 
+        toast.error(error.response?.data?.error || "Something went wrong!");
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     }
   }
 

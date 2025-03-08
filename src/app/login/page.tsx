@@ -3,7 +3,7 @@
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
 const Login = () => {
@@ -18,29 +18,33 @@ const Login = () => {
 
   const onLogin = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
 
-      const response = await axios.post("/api/users/login",user)
-      toast.success(response.data.message)
-      router.push("/profile")
-    } catch (error:any) {
-      toast.error(error.response.data.error)
-    }finally{
-      setLoading(false)
+      const response = await axios.post("/api/users/login", user);
+      toast.success(response.data.message);
+      router.push("/profile");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.error || "Something went wrong!");
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if(user.email.length > 0 && user.password.length > 0){
-      setButtonDisabled(false)
-    }else{
-      setButtonDisabled(true)
+    if (user.email.length > 0 && user.password.length > 0) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
     }
-  }, [user])
-  
+  }, [user]);
+
   return (
     <div className="flex flex-col items-center justify-center h-screen py-2">
-      <h1>{loading? "Processing":"Login"} </h1>
+      <h1>{loading ? "Processing" : "Login"} </h1>
       <hr />
 
       <div className="flex items-center gap-5 mt-10">
@@ -69,7 +73,7 @@ const Login = () => {
         onClick={onLogin}
         className="p-3 rounded border border-zinc-300 cursor-pointer"
       >
-        {buttonDisabled?"No Login":"Login"}
+        {buttonDisabled ? "No Login" : "Login"}
       </button>
       <Link href="/signup">Go to Signup</Link>
     </div>
